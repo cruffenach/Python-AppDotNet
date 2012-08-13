@@ -6,7 +6,7 @@ Usage:
   appdotnet authenticate <client_id>
   appdotnet accesstoken <access_token>
   appdotnet global [--raw]
-  appdotnet
+  appdotnet test
   appdotnet -h | --help
   appdotnet --version
 
@@ -71,10 +71,16 @@ class AppDotNet(object):
 			redirect_uri=theRedirectURI,
 			scopes=theScopes)
 		
-		# theURL = re.sub(r'[\n\r][ \t]*', '', theURL)
 		theURL = re.sub(r' ', '%20', theURL)
-		theCommand = 'open \'%s\'' % theURL
-		r = envoy.run(theCommand)
+
+		if sys.platform.startswith('linux'):
+			theCommand = 'xdg-open \'%s\'' % theURL
+			r = envoy.run(theCommand)
+		elif sys.platform is 'darwin':
+			theCommand = 'open \'%s\'' % theURL
+			r = envoy.run(theCommand)
+		else:
+			print 'Open \'%s\' in your web browser' % theURL
 
 	def retrieve_global_stream(self, min_id = None, max_id = None, count = None, include_user = True, include_annotations = True, include_replies = True):
 		theURL = '{URL}/posts/stream/global'.format(URL = self.config.get('Service', 'URL'))
@@ -105,13 +111,34 @@ class AppDotNet(object):
 					'text': thePost['text'],
 					}
 				print u'{t.standout}{user}{t.normal}: {text}'.format(t = t, **d)
-		
+
+	def top(self):
+		r = self.retrieve_global_stream(count = 1)
+		r = r.json
+		print r[0]['id']
+
+	def fetch_all(self):
+		next = 200
+		posts = []
+		while True:
+			r = self.retrieve_global_stream(count = 200, max_id = next)
+			r = r.json
+			if not len(r):
+				break
+			posts += r
+			next = int(r[0]['id']) + 200
+			print len(posts)
+
+		json.dump(posts, file('/Users/schwa/Desktop/dump.json', 'w'))
+
+	def test(self):
+		self.fetch_all()
+
 ################################################################################
 
 if __name__ == '__main__':
 	argv = sys.argv[1:]
 	arguments = docopt.docopt(__doc__, argv=argv, version='appdotnet')
-	print arguments
 	
 	theApp = AppDotNet()
 	
@@ -124,3 +151,5 @@ if __name__ == '__main__':
 		theApp.synchronize()
 	elif arguments['global']:
 		theApp.list_global(raw = arguments['--raw'])
+	elif arguments['test']:
+		theApp.test()
