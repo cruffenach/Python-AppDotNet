@@ -17,4 +17,4 @@ A minimal Python app.net command line client.
 	
 * You should be good now, fetch the last batch of global posts
 
-    $ python global
+    $ python appdotnet.py global
