@@ -9,9 +9,9 @@
 
 	# python appdotnet.py authenticate <client_id>
 
-* This will open your web browser at a "x-appdotnethelper:///" url take note of the access token.
+* This will try to open your web browser at a "x-appdotnethelper:///#access_token=xxxxxxx" url take note of the access token.
 
-	# python appdotnet.py set-accesstoken <access_token>
+	# python appdotnet.py accesstoken <access_token>
 	
 * You should be good now, fetch the last batch of global posts
 

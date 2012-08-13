@@ -4,7 +4,7 @@
 
 Usage:
   appdotnet authenticate <client_id>
-  appdotnet set-accesstoken <access_token>
+  appdotnet accesstoken <access_token>
   appdotnet global [--raw]
   appdotnet
   appdotnet -h | --help
@@ -38,12 +38,12 @@ class AppDotNet(object):
 	############################################################################
 
 	@property
-	def clientID(self):
+	def client_id(self):
 		return self.config.get('Authentication', 'client_id')
 
-	@clientID.setter
-	def clientID(self, clientID):
-		self.config.set('Authentication', 'client_id', clientID)
+	@client_id.setter
+	def client_id(self, client_id):
+		self.config.set('Authentication', 'client_id', client_id)
 
 	@property
 	def accessToken(self):
@@ -109,17 +109,16 @@ class AppDotNet(object):
 
 if __name__ == '__main__':
 	argv = sys.argv[1:]
-	argv = 'global'
 	arguments = docopt.docopt(__doc__, argv=argv, version='appdotnet')
 	print arguments
 	
 	theApp = AppDotNet()
 	
 	if arguments['authenticate'] and arguments['<client_id>']:
-		theApp.clientID = arguments['<client_id>']
+		theApp.client_id = arguments['<client_id>']
 		theApp.synchronize()
 		theApp.authenticate()
-	elif arguments['set-accesstoken'] and arguments['<access_token>']:
+	elif arguments['accesstoken'] and arguments['<access_token>']:
 		theApp.accessToken = arguments['<access_token>']
 		theApp.synchronize()
 	elif arguments['global']:
