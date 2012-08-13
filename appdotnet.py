@@ -6,7 +6,6 @@ Usage:
   appdotnet authenticate <client_id>
   appdotnet accesstoken <access_token>
   appdotnet global [--raw]
-  appdotnet test
   appdotnet -h | --help
   appdotnet --version
 
@@ -112,28 +111,6 @@ class AppDotNet(object):
 					}
 				print u'{t.standout}{user}{t.normal}: {text}'.format(t = t, **d)
 
-	def top(self):
-		r = self.retrieve_global_stream(count = 1)
-		r = r.json
-		print r[0]['id']
-
-	def fetch_all(self):
-		next = 200
-		posts = []
-		while True:
-			r = self.retrieve_global_stream(count = 200, max_id = next)
-			r = r.json
-			if not len(r):
-				break
-			posts += r
-			next = int(r[0]['id']) + 200
-			print len(posts)
-
-		json.dump(posts, file('/Users/schwa/Desktop/dump.json', 'w'))
-
-	def test(self):
-		self.fetch_all()
-
 ################################################################################
 
 if __name__ == '__main__':
@@ -151,5 +128,3 @@ if __name__ == '__main__':
 		theApp.synchronize()
 	elif arguments['global']:
 		theApp.list_global(raw = arguments['--raw'])
-	elif arguments['test']:
-		theApp.test()
