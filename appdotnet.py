@@ -17,12 +17,13 @@ Options:
 
 import re
 import sys
-
-import requests # pip install --user requests
-import envoy # pip install --user envoy
-import docopt # pip install --user docopt
-import blessings
 import json
+
+import requests  # pip install --user requests
+import envoy     # pip install --user envoy
+import docopt    # pip install --user docopt
+import blessings # pip install --user blessings
+
 import defaults
 
 class AppDotNet(object):
