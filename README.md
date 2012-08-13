@@ -1,4 +1,6 @@
-# Python-AppDotNet
+# AppDotNet
+
+A minimal Python app.net command line client.
 
 ## Quick HOWTO:
 
@@ -7,12 +9,12 @@
 * Use "x-appdotnethelper:///" as the Callback URL.
 * Call appdotnet.py with the client id
 
-	$ python appdotnet.py authenticate <client_id>
+    $ python appdotnet.py authenticate <client_id>
 
 * This will try to open your web browser at a "x-appdotnethelper:///#access_token=xxxxxxx" url take note of the access token.
 
-	$ python appdotnet.py accesstoken <access_token>
+    $ python appdotnet.py accesstoken <access_token>
 	
 * You should be good now, fetch the last batch of global posts
 
-	$ python global
+    $ python global
